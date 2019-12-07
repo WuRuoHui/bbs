@@ -27,16 +27,16 @@
             </form>
         </ul>
         <ul class="navbar-nav navbar-right">
-            <li class="nav-item">
+            <li class="nav-item" th:if="${session.user == null}">
                 <a class="nav-link"
                    href="https://github.com/login/oauth/authorize?client_id=0edababf293cfd3a6950&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录
                     <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" th:if="${session.user != null}">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                    data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    我
+                   aria-haspopup="true" aria-expanded="false" th:text="${session.user.name}">
+<!--                    我-->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">个人信息</a>

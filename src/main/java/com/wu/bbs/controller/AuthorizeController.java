@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class AuthorizeController {
 
@@ -25,8 +27,9 @@ public class AuthorizeController {
     private String GITHUB_CLIENT_SECRET;
     @Value("${github.redirect.uri}")
     private String GITHUB_REDIRECT_URI;
+
     @GetMapping("/callback")
-    public String callback(String code, String state) {
+    public String callback(String code, String state, HttpServletRequest request) {
         System.out.println(code + ":" + state);
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
@@ -38,6 +41,12 @@ public class AuthorizeController {
         GithubUser user = githubProvider.getUser(accessToken);
         System.out.println(accessToken);
         System.out.println(user.getId() + ":" + user.getName());
-        return "index";
+        if (user != null) {
+            //登录成功，写cookie和session
+            request.getSession().setAttribute("user", user);
+            return "redirect:/";
+        } else {
+            return "redirect:index";
+        }
     }
 }

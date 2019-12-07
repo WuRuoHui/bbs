@@ -58,7 +58,14 @@
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
+        <!-- 开启热部署 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
+
     <!-- 打包的时候将项目打包成jar包 -->
     <build>
         <plugins>
@@ -72,8 +79,8 @@
                 <version>6.1.0</version>
                 <configuration>
                     <url>jdbc:h2:~/bbs</url>
-<!--                    <user>wu</user>-->
-<!--                    <password>458974</password>-->
+                    <!--                    <user>wu</user>-->
+                    <!--                    <password>458974</password>-->
                 </configuration>
                 <dependencies>
                     <dependency>

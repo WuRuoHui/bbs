@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HelloController {
 
-    @GetMapping("/hello") //RequestMapping的缩写方式，表示method是GET方式
+    @GetMapping("/") //RequestMapping的缩写方式，表示method是GET方式
     public String hello() {
         return "index";
     }

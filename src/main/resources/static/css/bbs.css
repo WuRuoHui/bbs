@@ -7,3 +7,14 @@
     float: right;
     margin-bottom: 15px;
 }
+/*缩略图样式*/
+.littleImg {
+    width: 38px;
+    height: 38px;
+}
+/*question详情样式*/
+.questionDetail {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999
+}

@@ -8,10 +8,15 @@ package com.wu.bbs.mapper;
 
 import com.wu.bbs.entity.Question;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
-@Mapper
+import java.util.List;
+
+//@Mapper
 public interface QuestionMapper {
-    @Insert("insert into QUESTION(title,description,gmt_create,gmt_modified,creator) values (#{title},#{description},#{gmt_create},#{gmt_modified},#{creator})")
+    @Insert("insert into QUESTION(title,description,gmt_create,gmt_modified,creator) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator})")
     void create(Question question);
+
+    @Select("select * from question")
+    List<Question> getAllQuestion();
 }

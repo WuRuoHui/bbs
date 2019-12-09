@@ -6,44 +6,41 @@
  **/
 package com.wu.bbs.controller;
 
-import com.wu.bbs.dto.AccessTokenDTO;
 import com.wu.bbs.dto.GithubUser;
-import com.wu.bbs.provider.GithubProvider;
+import com.wu.bbs.service.AuthorizeService;
+import com.wu.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
 
     @Autowired
-    private GithubProvider githubProvider;
-    @Value("${github.client.id}")
-    private String GITHUB_CLIENT_ID;
-    @Value("${github.client.secret}")
-    private String GITHUB_CLIENT_SECRET;
-    @Value("${github.redirect.uri}")
-    private String GITHUB_REDIRECT_URI;
+    private UserService userService;
+    @Autowired
+    private AuthorizeService authorizeService;
 
     @GetMapping("/callback")
-    public String callback(String code, String state, HttpServletRequest request) {
+    public String callback(String code, String state, HttpServletRequest request, HttpServletResponse response) {
         System.out.println(code + ":" + state);
-        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri(GITHUB_REDIRECT_URI);
-        accessTokenDTO.setClient_secret(GITHUB_CLIENT_SECRET);
-        accessTokenDTO.setClient_id(GITHUB_CLIENT_ID);
-        accessTokenDTO.setState(state);
-        String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
+        String accessToken = authorizeService.getAccessToken(code, state);
+        GithubUser githubUser = authorizeService.getUser(accessToken);
         System.out.println(accessToken);
-        System.out.println(user.getId() + ":" + user.getName());
-        if (user != null) {
+        System.out.println(githubUser.getId() + ":" + githubUser.getName());
+        if (githubUser != null && githubUser.getId() != null) {
+            String token = UUID.randomUUID().toString();
+            userService.insert(githubUser, token);
             //登录成功，写cookie和session
-            request.getSession().setAttribute("user", user);
+//            request.getSession().setAttribute("user", githubUser);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(3600);
+            response.addCookie(cookie);
             return "redirect:/";
         } else {
             return "redirect:index";

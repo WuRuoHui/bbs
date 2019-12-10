@@ -6,13 +6,12 @@
  **/
 package com.wu.bbs.service;
 
+import com.github.pagehelper.PageInfo;
 import com.wu.bbs.dto.GithubUser;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
 
-import java.util.List;
-
 public interface PublishService {
     String doPublish(Question question, GithubUser user);
-    List<QuestionDTO> getAllQuestion();
+    PageInfo<QuestionDTO> getAllQuestion(Integer currentPage, Integer size);
 }

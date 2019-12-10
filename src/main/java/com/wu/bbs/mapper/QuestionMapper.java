@@ -19,4 +19,7 @@ public interface QuestionMapper {
 
     @Select("select * from question")
     List<Question> getAllQuestion();
+
+    @Select("select count(1) from question")
+    Integer getAllQuestionCount();
 }

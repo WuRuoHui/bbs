@@ -6,6 +6,8 @@
  **/
 package com.wu.bbs.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wu.bbs.dto.GithubUser;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
@@ -32,23 +34,45 @@ public class PublishServiceImpl implements PublishService {
     public String doPublish(Question question, GithubUser user) {
         try {
             questionMapper.create(question);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return "fail";
         }
         return "success";
     }
 
     @Override
-    public List<QuestionDTO> getAllQuestion() {
+    public PageInfo<QuestionDTO> getAllQuestion(Integer currentPage, Integer size) {
+        Integer totalCount = questionMapper.getAllQuestionCount();    //获得总记录数
+        int pages = (totalCount + size - 1) / size;                   //获得总页数
+//        int offset = (currentPage - 1) * size;
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+        if (currentPage > pages) {
+            currentPage = pages;
+        }
+        PageHelper.startPage(currentPage,size);
         List<Question> questionList = questionMapper.getAllQuestion();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             User user = userMapper.findUserById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        return questionDTOList;
+        PageInfo<QuestionDTO> questionDTOPage = new PageInfo<QuestionDTO>(questionDTOList);
+        questionDTOPage.setPageSize(size);
+        questionDTOPage.setPageNum(currentPage);
+        questionDTOPage.setSize(totalCount);
+        questionDTOPage.setPages(pages);
+       /* PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
+        paginationDTO.setCurrentPage(currentPage);     //设置分页bean的当前页
+        paginationDTO.setSize(size);                   //设置每页显示条数
+        paginationDTO.setList(questionDTOList);        //设置返回的QuestionDTO集合
+        Integer totalCount = questionMapper.getAllQuestionCount();
+        Integer totalPage = (totalCount + size - 1) / size;
+        paginationDTO.setTotalPage(totalPage);*/
+        return questionDTOPage;
     }
 }

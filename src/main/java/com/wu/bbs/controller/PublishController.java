@@ -6,8 +6,8 @@
  **/
 package com.wu.bbs.controller;
 
-import com.wu.bbs.dto.GithubUser;
 import com.wu.bbs.entity.Question;
+import com.wu.bbs.entity.User;
 import com.wu.bbs.service.PublishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,7 @@ public class PublishController {
             model.addAttribute("error","标签不能为空");
             return "publish";
         }
-        GithubUser user = (GithubUser) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (user==null) {
             model.addAttribute("error","请登录");
             return "publish";

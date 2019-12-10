@@ -8,7 +8,6 @@ package com.wu.bbs.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.wu.bbs.dto.GithubUser;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
 import com.wu.bbs.entity.User;
@@ -31,7 +30,7 @@ public class PublishServiceImpl implements PublishService {
     private UserMapper userMapper;
 
     @Override
-    public String doPublish(Question question, GithubUser user) {
+    public String doPublish(Question question, User user) {
         try {
             questionMapper.create(question);
         } catch (Exception e) {
@@ -51,7 +50,7 @@ public class PublishServiceImpl implements PublishService {
         if (currentPage > pages) {
             currentPage = pages;
         }
-        PageHelper.startPage(currentPage,size);
+        PageHelper.startPage(currentPage, size);
         List<Question> questionList = questionMapper.getAllQuestion();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
@@ -65,6 +64,7 @@ public class PublishServiceImpl implements PublishService {
         questionDTOPage.setPageSize(size);
         questionDTOPage.setPageNum(currentPage);
         questionDTOPage.setSize(totalCount);
+        if (pages < 1) pages = 1;
         questionDTOPage.setPages(pages);
        /* PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         paginationDTO.setCurrentPage(currentPage);     //设置分页bean的当前页

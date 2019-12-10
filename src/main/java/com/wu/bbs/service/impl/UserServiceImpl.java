@@ -36,4 +36,9 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.getUserByToken(token);
         return user;
     }
+
+    @Override
+    public void updateUserTokenById(Integer id ,String token) {
+        userMapper.updateUserTokenById(id,token);
+    }
 }

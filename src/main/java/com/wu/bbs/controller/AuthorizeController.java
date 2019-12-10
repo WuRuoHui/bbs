@@ -7,6 +7,7 @@
 package com.wu.bbs.controller;
 
 import com.wu.bbs.dto.GithubUser;
+import com.wu.bbs.entity.User;
 import com.wu.bbs.service.AuthorizeService;
 import com.wu.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,12 @@ public class AuthorizeController {
         System.out.println(githubUser.getId() + ":" + githubUser.getName());
         if (githubUser != null && githubUser.getId() != null) {
             String token = UUID.randomUUID().toString();
-            userService.insert(githubUser, token);
+            User userByToken = userService.getUserByToken(token);
+            if (userByToken != null) {
+                userService.updateUserTokenById(userByToken.getId(),token);
+            } else {
+                userService.insert(githubUser, token);
+            }
             //登录成功，写cookie和session
 //            request.getSession().setAttribute("user", githubUser);
             Cookie cookie = new Cookie("token", token);

@@ -10,4 +10,6 @@ public interface UserService {
     User getUserByToken(String token);
 
     void updateUserTokenById(Integer id, String token);
+
+    void createOrUpdate(GithubUser githubUser, String token);
 }

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setToken(token);
         user.setName(githubUser.getName());
-        user.setAccount_id(String.valueOf(githubUser.getId()));
+        user.setAccountId(String.valueOf(githubUser.getId()));
         user.setAvatarUrl(githubUser.getAvatar_url());
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(System.currentTimeMillis());
@@ -40,5 +40,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserTokenById(Integer id ,String token) {
         userMapper.updateUserTokenById(id,token);
+    }
+
+    @Override
+    public void createOrUpdate(GithubUser githubUser, String token) {
+        User user = userMapper.findUserByAccountId(githubUser.getId().intValue());
+        if (user != null) {
+            user.setToken(token);
+            user.setGmtModified(System.currentTimeMillis());
+            userMapper.updateUserToken(user);
+        }else {
+            insert(githubUser,token);
+        }
     }
 }

@@ -28,5 +28,6 @@ public interface UserMapper {
     @Update("update user set token = #{token} where id = #{id}")
     void updateUserTokenById(Integer id, String token);
 
-
+    @Update("update user set token = #{token} where id = #{id}")
+    void updateUserToken(User user);
 }

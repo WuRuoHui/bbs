@@ -8,8 +8,10 @@ package com.wu.bbs.dto;
 
 import com.wu.bbs.entity.User;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class QuestionDTO {
     private Integer id;
     private String title;

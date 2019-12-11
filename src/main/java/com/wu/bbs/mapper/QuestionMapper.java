@@ -22,4 +22,7 @@ public interface QuestionMapper {
 
     @Select("select count(1) from question")
     Integer getAllQuestionCount();
+
+    @Select("select * from question where id = #{id} ")
+    Question findQuestionById(Integer id);
 }

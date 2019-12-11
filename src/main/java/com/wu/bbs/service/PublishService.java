@@ -14,4 +14,5 @@ import com.wu.bbs.entity.User;
 public interface PublishService {
     String doPublish(Question question, User user);
     PageInfo<QuestionDTO> getAllQuestion(Integer currentPage, Integer size);
+    QuestionDTO findQuestionById(Integer id);
 }

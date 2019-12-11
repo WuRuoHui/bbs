@@ -75,4 +75,14 @@ public class PublishServiceImpl implements PublishService {
         paginationDTO.setTotalPage(totalPage);*/
         return questionDTOPage;
     }
+
+    @Override
+    public QuestionDTO findQuestionById(Integer id) {
+        Question question = questionMapper.findQuestionById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+        User user = userMapper.findUserById(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
 }

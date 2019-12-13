@@ -29,7 +29,7 @@
             </div>
             <hr>
             <span>
-                <a style="color: #999;font-size: 13px" th:href="@{'/profile/publish/'+${questionDTO.id}}"><span class="fas fa-edit"></span>编辑</a>
+                <a style="color: #999;font-size: 13px" th:href="@{'/profile/publish/'+${questionDTO.id}}" th:if="${session.user.id == questionDTO.creator}"><span class="fas fa-edit"></span>编辑</a>
             </span>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">

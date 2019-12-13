@@ -104,6 +104,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- 引入flyway -->
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
@@ -115,9 +116,23 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>com.alibaba</groupId>
-                        <artifactId>druid</artifactId>
-                        <version>1.1.21</version>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.32</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- http://mybatis.org/generator/running/runningWithMaven.html -->
+            <!-- 引入mybatis generator -->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.32</version>
                     </dependency>
                 </dependencies>
             </plugin>

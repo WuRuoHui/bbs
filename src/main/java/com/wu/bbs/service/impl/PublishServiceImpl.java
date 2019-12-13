@@ -10,6 +10,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
+import com.wu.bbs.entity.QuestionExample;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.mapper.QuestionMapper;
 import com.wu.bbs.mapper.UserMapper;
@@ -32,7 +33,7 @@ public class PublishServiceImpl implements PublishService {
     @Override
     public String doPublish(Question question, User user) {
         try {
-            questionMapper.create(question);
+            questionMapper.insert(question);
         } catch (Exception e) {
             return "fail";
         }
@@ -41,7 +42,7 @@ public class PublishServiceImpl implements PublishService {
 
     @Override
     public PageInfo<QuestionDTO> getAllQuestion(Integer currentPage, Integer size) {
-        Integer totalCount = questionMapper.getAllQuestionCount();    //获得总记录数
+        Integer totalCount = Math.toIntExact(questionMapper.countByExample(new QuestionExample()));    //获得总记录数
         int pages = (totalCount + size - 1) / size;                   //获得总页数
 //        int offset = (currentPage - 1) * size;
         if (currentPage < 1) {
@@ -51,10 +52,10 @@ public class PublishServiceImpl implements PublishService {
             currentPage = pages;
         }
         PageHelper.startPage(currentPage, size);
-        List<Question> questionList = questionMapper.getAllQuestion();
+        List<Question> questionList = questionMapper.selectByExample(new QuestionExample());
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
-            User user = userMapper.findUserById(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
@@ -78,11 +79,22 @@ public class PublishServiceImpl implements PublishService {
 
     @Override
     public QuestionDTO findQuestionById(Integer id) {
-        Question question = questionMapper.findQuestionById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
-        User user = userMapper.findUserById(question.getCreator());
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    @Override
+    public void createOrUpdate(Question question) {
+        question.setGmtModified(System.currentTimeMillis());
+        if (question.getId() == null) {
+            question.setGmtCreate(System.currentTimeMillis());
+            questionMapper.insert(question);
+        } else {
+            questionMapper.updateByPrimaryKey(question);
+        }
     }
 }

@@ -43,7 +43,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             return "redirect:/";
         } else {
-            return "redirect:index";
+            return "redirect:/";
         }
     }
 

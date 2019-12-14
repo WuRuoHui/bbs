@@ -12,6 +12,8 @@ import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
 import com.wu.bbs.entity.QuestionExample;
 import com.wu.bbs.entity.User;
+import com.wu.bbs.exception.CustomizeErrorCode;
+import com.wu.bbs.exception.CustomizeException;
 import com.wu.bbs.mapper.QuestionMapper;
 import com.wu.bbs.mapper.UserMapper;
 import com.wu.bbs.service.PublishService;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class PublishServiceImpl implements PublishService {
@@ -80,6 +83,9 @@ public class PublishServiceImpl implements PublishService {
     @Override
     public QuestionDTO findQuestionById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -89,12 +95,20 @@ public class PublishServiceImpl implements PublishService {
 
     @Override
     public void createOrUpdate(Question question) {
+        System.out.println("question："+question.getId());
         question.setGmtModified(System.currentTimeMillis());
         if (question.getId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
             questionMapper.insert(question);
         } else {
-            questionMapper.updateByPrimaryKey(question);
+            System.out.println(question.getId());
+            System.out.println(question.toString());
+            QuestionExample example = new QuestionExample();
+            example.createCriteria().andIdEqualTo(question.getId());
+            int rows = questionMapper.updateByExampleSelective(question, example);
+            if (rows != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }

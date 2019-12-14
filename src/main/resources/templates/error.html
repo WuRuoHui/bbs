@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BBS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <!-- 引入fontawesome字体图标 -->
+    <link rel="stylesheet" type="text/css" href="/fontawesome/css/all.css"/>
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" type="text/css" href="/css/bbs.css"/>
+    <script type="application/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="/js/bootstrap.bundle.min.js"/>
+    <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<!-- 引入顶部工具栏 -->
+<div th:replace="/top::topBar"></div>
+<div class="container main" style="background-color: white">
+    <div class="jumbotron">
+        <h1 class="display-4">出错啦！！！</h1>
+        <p class="lead">出错啦！！！</p>
+        <hr class="my-4">
+        <p th:text="${message}">服务器放高温假了</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+</div>
+</body>
+</html>

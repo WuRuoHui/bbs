@@ -46,6 +46,8 @@ public class ProfileController {
     @RequestMapping("/profile/questions/{id}")
     public String findProfileById(@PathVariable(name = "id") Integer id, Model model) {
         QuestionDTO questionDTO = publishService.findQuestionById(id);
+        //增加阅读数
+        publishService.incView(id);
         System.out.println(questionDTO);
         model.addAttribute("questionDTO", questionDTO);
         return "question";

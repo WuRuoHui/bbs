@@ -18,7 +18,7 @@
         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <h2><span class="fa fa-plus" aria-hidden="true"></span>发起</h2>
             <hr>
-            <form action="/publish" method="post">
+            <form th:action="@{/publish}" th:method="post">
                 <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）</label>

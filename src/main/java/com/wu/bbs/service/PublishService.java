@@ -17,4 +17,6 @@ public interface PublishService {
     QuestionDTO findQuestionById(Integer id);
 
     void createOrUpdate(Question question);
+
+    void incView(Integer id);
 }

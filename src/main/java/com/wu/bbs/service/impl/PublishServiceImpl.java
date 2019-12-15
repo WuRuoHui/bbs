@@ -14,6 +14,7 @@ import com.wu.bbs.entity.QuestionExample;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.exception.CustomizeErrorCode;
 import com.wu.bbs.exception.CustomizeException;
+import com.wu.bbs.mapper.QuestionExtMapper;
 import com.wu.bbs.mapper.QuestionMapper;
 import com.wu.bbs.mapper.UserMapper;
 import com.wu.bbs.service.PublishService;
@@ -24,12 +25,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class PublishServiceImpl implements PublishService {
 
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     @Autowired
     private UserMapper userMapper;
 
@@ -95,11 +97,11 @@ public class PublishServiceImpl implements PublishService {
 
     @Override
     public void createOrUpdate(Question question) {
-        System.out.println("question："+question.getId());
+        System.out.println("question：" + question.getId());
         question.setGmtModified(System.currentTimeMillis());
         if (question.getId() == null) {
             question.setGmtCreate(System.currentTimeMillis());
-            questionMapper.insert(question);
+            questionMapper.insertSelective(question);
         } else {
             System.out.println(question.getId());
             System.out.println(question.toString());
@@ -110,5 +112,14 @@ public class PublishServiceImpl implements PublishService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    @Override
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setViewCount(1);
+        question.setId(id);
+        questionExtMapper.incView(question);
+        System.out.println(question);
     }
 }

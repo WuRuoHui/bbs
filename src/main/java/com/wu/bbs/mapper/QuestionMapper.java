@@ -2,8 +2,9 @@ package com.wu.bbs.mapper;
 
 import com.wu.bbs.entity.Question;
 import com.wu.bbs.entity.QuestionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface QuestionMapper {
     long countByExample(QuestionExample example);

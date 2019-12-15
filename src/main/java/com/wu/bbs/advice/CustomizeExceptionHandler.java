@@ -20,7 +20,9 @@ public class CustomizeExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handle(HttpServletRequest request, Throwable ex, Model model) {
-        HttpStatus status = getStatus(request);
+        String contentType = request.getContentType();
+/*        if ()
+        HttpStatus status = getStatus(request);*/
         if (ex instanceof CustomizeException) {
             model.addAttribute("message", ex.getMessage());
         } else {

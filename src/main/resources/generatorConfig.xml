@@ -42,9 +42,9 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 指定数据库表 -->
-        <table schema="" tableName="user" domainObjectName="User"></table>
-        <table schema="" tableName="question" domainObjectName="Question"></table>
-        <table schema="" tableName="kf_game_contact"></table>
+<!--        <table schema="" tableName="user" domainObjectName="User"></table>-->
+<!--        <table schema="" tableName="question" domainObjectName="Question"></table>-->
+        <table schema="" tableName="comment" domainObjectName="Comment"></table>
 
     </context>
 </generatorConfiguration>

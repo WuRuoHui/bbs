@@ -7,6 +7,7 @@
 package com.wu.bbs.dto;
 
 import com.wu.bbs.exception.CustomizeErrorCode;
+import com.wu.bbs.exception.CustomizeException;
 import lombok.Data;
 
 @Data
@@ -30,5 +31,9 @@ public class ResultDTO {
 
     public static ResultDTO errorOf(CustomizeErrorCode errorCode) {
         return new ResultDTO(errorCode.getCode(),errorCode.getMessage());
+    }
+
+    public static ResultDTO errorOf(CustomizeException ex) {
+        return new ResultDTO(ex.getCode(),ex.getMessage());
     }
 }

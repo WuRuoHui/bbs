@@ -11,6 +11,7 @@
     <script type="application/javascript" src="/js/jquery-3.4.1.min.js"></script>
     <script type="application/javascript" src="/js/bootstrap.bundle.min.js"/>
     <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="application/javascript" th:src="@{/js/bbs.js}"></script>
 </head>
 <body>
 <!-- 引入顶部工具栏 -->
@@ -18,19 +19,36 @@
 <div class="container main" style="background-color: white">
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-            <h3><span th:text="${questionDTO.title}"></span></h3>
-            <span class="questionDetail">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h3><span th:text="${questionDTO.title}"></span></h3>
+                <span class="questionDetail">
                 作者：<span th:text="${questionDTO.user.name}"></span>  |
                 阅读数：<span th:text="${questionDTO.viewCount}"></span>  |
                 发布时间：<span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
             </span>
-            <hr>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}">
-            </div>
-            <hr>
-            <span>
-                <a style="color: #999;font-size: 13px" th:href="@{'/profile/publish/'+${questionDTO.id}}" th:if="${session.user.id == questionDTO.creator}"><span class="fas fa-edit"></span>编辑</a>
+                <hr>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}">
+                </div>
+                <hr>
+                <span>
+                <a style="color: #999;font-size: 13px" th:href="@{'/profile/publish/'+${questionDTO.id}}"
+                   th:if="${session.user !=null && session.user.id == questionDTO.creator}"><span class="fas fa-edit"></span>编辑</a>
             </span>
+            <hr>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="commentSection">
+                <div class="media">
+                    <img th:src="${questionDTO.user.avatarUrl}" class="mr-3 rounded littleImg"
+                         alt="...">
+                    <div class="media-body" style="padding-top: 5px">
+                        <h5 class="mt-0" th:text="${questionDTO.user.name}"></h5>
+                        </span>
+                    </div>
+                </div>
+                <input type="hidden" class="comment-parentId" name="parentId" th:value="${questionDTO.id}">
+                <textarea class="form-control comment-content" id="exampleFormControlTextarea1" rows="3" style="margin: 10px 0px"></textarea>
+                <button type="button" class="btn btn-success btn-comment float-right" onclick="postComment()">回复</button>
+            </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -40,7 +58,7 @@
                          alt="...">
                     <div class="media-body">
                         <h5 class="mt-0" th:text="${questionDTO.user.name}"></h5>
-                    </span>
+                        </span>
                     </div>
                 </div>
             </div>

@@ -7,4 +7,6 @@ public interface QuestionExtMapper {
 
     int incView(@Param("question") Question question);
 
+    int incCommentCount(@Param("question") Question question);
+
 }

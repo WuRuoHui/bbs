@@ -13,6 +13,15 @@
     <script type="application/javascript" src="/js/bootstrap.min.js"></script>
 
 </head>
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable) {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <!-- 引入顶部工具栏 -->
 <div th:replace="/top::topBar"></div>
@@ -26,7 +35,7 @@
                 <img th:src="${question.user.avatarUrl}" class="mr-3 rounded littleImg"
                      alt="...">
                 <div class="media-body">
-                    <h5 class="mt-0" th:text="${question.title}"></h5>
+                    <h5 class="mt-0"><a th:href="@{'/profile/questions/'+${question.id}}" th:text="${question.title}"></a></h5>
                     [[${question.description}]]<br>
                     <span class="questionDetail">
                         • <span th:text="${question.commentCount}"></span>个评论

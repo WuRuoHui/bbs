@@ -57,7 +57,8 @@ public class PublishServiceImpl implements PublishService {
             currentPage = pages;
         }
         PageHelper.startPage(currentPage, size);
-        List<Question> questionList = questionMapper.selectByExample(new QuestionExample());
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBs(new QuestionExample());
+        System.out.println(questionList);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());

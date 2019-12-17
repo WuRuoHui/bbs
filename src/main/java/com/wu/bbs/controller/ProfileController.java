@@ -7,8 +7,10 @@
 package com.wu.bbs.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.wu.bbs.dto.CommentDTO;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.User;
+import com.wu.bbs.service.CommentService;
 import com.wu.bbs.service.PublishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,12 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class ProfileController {
 
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("/profile/{action}")
     public String showProfile(@PathVariable(name = "action") String action, Model model, HttpServletRequest request, @RequestParam(defaultValue = "1") Integer currentPage,
@@ -49,7 +54,9 @@ public class ProfileController {
         //增加阅读数
         publishService.incView(id);
         System.out.println(questionDTO);
+        List<CommentDTO> commentDTOList = commentService.listByQuestionId(id);
         model.addAttribute("questionDTO", questionDTO);
+        model.addAttribute("commentDTOList",commentDTOList);
         return "question";
     }
 

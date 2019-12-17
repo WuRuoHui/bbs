@@ -6,7 +6,7 @@
  **/
 package com.wu.bbs.controller;
 
-import com.wu.bbs.dto.CommentDTO;
+import com.wu.bbs.dto.CommentCreateDTO;
 import com.wu.bbs.dto.ResultDTO;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.exception.CustomizeErrorCode;
@@ -27,13 +27,13 @@ public class CommentController {
 
     @ResponseBody
     @PostMapping("/comment")
-    public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request) {
-        System.out.println(commentDTO);
+    public Object post(@RequestBody CommentCreateDTO commentCreateDTO, HttpServletRequest request) {
+        System.out.println(commentCreateDTO);
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.USET_NOT_FOUND);
         }
-        commentService.insert(commentDTO, user);
+        commentService.insert(commentCreateDTO, user);
         return ResultDTO.okOf();
     }
 }

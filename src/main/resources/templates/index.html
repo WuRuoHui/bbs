@@ -36,7 +36,7 @@
                      alt="...">
                 <div class="media-body">
                     <h5 class="mt-0"><a th:href="@{'/profile/questions/'+${question.id}}" th:text="${question.title}"></a></h5>
-                    [[${question.description}]]<br>
+                    <span th:text="${question.description}"></span><br>
                     <span class="questionDetail">
                         • <span th:text="${question.commentCount}"></span>个评论
                         • <span th:text="${question.viewCount}"></span>次浏览

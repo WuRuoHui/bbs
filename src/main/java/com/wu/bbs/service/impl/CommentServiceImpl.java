@@ -76,11 +76,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> listByQuestionId(Integer id) {
+    public List<CommentDTO> listByQuestionId(Long id, Integer type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
-                .andParentIdEqualTo(Long.valueOf(id))
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andParentIdEqualTo(id)
+                .andTypeEqualTo(type);
         List<Comment> commentList = commentMapper.selectByExample(commentExample);
         if (commentList == null || commentList.size()==0) {
             return new ArrayList<>();

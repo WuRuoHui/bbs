@@ -11,17 +11,28 @@ import com.wu.bbs.exception.CustomizeException;
 import lombok.Data;
 
 @Data
-public class ResultDTO {
+public class ResultDTO<T> {
     private Integer code;
     private String message;
+    private  T data;
 
     public ResultDTO(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
+    public ResultDTO(Integer code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
     public static ResultDTO okOf() {
         return new ResultDTO(200,"成功");
+    }
+
+    public static <T> ResultDTO okOf(T t) {
+        return new ResultDTO(200,"成功",t);
     }
 
     public static ResultDTO errorOf(Integer code, String message) {

@@ -9,5 +9,5 @@ import java.util.List;
 public interface CommentService {
     void insert(CommentCreateDTO commentCreateDTO, User user);
 
-    List<CommentDTO> listByQuestionId(Integer id);
+    List<CommentDTO> listByQuestionId(Long id, Integer type);
 }

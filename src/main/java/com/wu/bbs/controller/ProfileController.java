@@ -8,6 +8,7 @@ package com.wu.bbs.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wu.bbs.dto.CommentDTO;
+import com.wu.bbs.dto.CommentTypeEnum;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.service.CommentService;
@@ -54,7 +55,7 @@ public class ProfileController {
         //增加阅读数
         publishService.incView(id);
         System.out.println(questionDTO);
-        List<CommentDTO> commentDTOList = commentService.listByQuestionId(id);
+        List<CommentDTO> commentDTOList = commentService.listByQuestionId(Long.valueOf(id), CommentTypeEnum.QUESTION.getType());
         model.addAttribute("questionDTO", questionDTO);
         model.addAttribute("commentDTOList",commentDTOList);
         return "question";

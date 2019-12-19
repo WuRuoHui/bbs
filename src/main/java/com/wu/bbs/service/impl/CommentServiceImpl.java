@@ -12,10 +12,7 @@ import com.wu.bbs.dto.CommentTypeEnum;
 import com.wu.bbs.entity.*;
 import com.wu.bbs.exception.CustomizeErrorCode;
 import com.wu.bbs.exception.CustomizeException;
-import com.wu.bbs.mapper.CommentMapper;
-import com.wu.bbs.mapper.QuestionExtMapper;
-import com.wu.bbs.mapper.QuestionMapper;
-import com.wu.bbs.mapper.UserMapper;
+import com.wu.bbs.mapper.*;
 import com.wu.bbs.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,8 @@ public class CommentServiceImpl implements CommentService {
     private UserMapper userMapper;
     @Autowired
     private QuestionExtMapper questionExtMapper;
+    @Autowired
+    private CommentExtMapper commentExtMapper;
 
     @Override
     @Transactional
@@ -63,6 +62,9 @@ public class CommentServiceImpl implements CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insertSelective(comment);
+            Comment c = commentMapper.selectByPrimaryKey(commentCreateDTO.getParentId());
+            c.setCommentCount(1);
+            commentExtMapper.incCommentCount(c);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId().intValue());

@@ -28,4 +28,6 @@ public class CommentDTO {
     private String content;
 
     private User user;
+
+    private Integer commentCount;
 }

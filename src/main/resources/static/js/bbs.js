@@ -53,9 +53,46 @@ function comment(e) {
 
 function changeColor(e) {
     var contentId = $(e).attr("data-id");
-    if (!$("#comment-" + contentId).hasClass("show")) {
+    var $subCommentContainer = $("#comment-" + contentId);
+    if (!$subCommentContainer.hasClass("show")) {
         console.log($("#comment-" + contentId).attr("class"))
         $(e).addClass("changeColor");
+        if ($subCommentContainer.children().length != 2) {
+        } else {
+            $.getJSON("/comment/" + contentId, function (data) {
+                $.each(data.data, function (index, comment) {
+                    var $littleImgElement = $("<img/>", {
+                        "class": "mr-3 rounded littleImg",
+                        "src": comment.user.avatarUrl
+                    });
+                    var $mediaBodyElement = $("<div/>", {
+                        "class": "media-body",
+                        "style": "padding-top: 5px"
+                    }).append($("<h6/>", {
+                        "class": "mt-0",
+                        html: comment.user.name
+                    }));
+                    $mediaBodyElement.append($("<span/>", {
+                        html: comment.content
+                    })).append($("<span/>", {
+                        "class": "float-right",
+                        html:moment(comment.gmtCreate).format('YYYY-MM-DD')
+                    }))
+                    var $mediaElement = $("<div/>", {
+                        "class": "media",
+                    });
+                    $mediaElement.append($littleImgElement);
+                    $mediaElement.append($mediaBodyElement);
+                    var $commentElement = $("<div/>", {
+                        "class": "card card-body",
+                        "style": "margin-bottom: 5px;margin-top: 5px",
+                    })
+                    $commentElement.append($mediaElement)
+                    $subCommentContainer.prepend($commentElement);
+                });
+            });
+
+        }
     } else {
         $(e).removeClass("changeColor");
     }

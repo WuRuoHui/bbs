@@ -54,10 +54,12 @@ public class ProfileController {
         QuestionDTO questionDTO = publishService.findQuestionById(id);
         //增加阅读数
         publishService.incView(id);
+        List<QuestionDTO> questionDTOList = publishService.selectRelated(questionDTO);
         System.out.println(questionDTO);
         List<CommentDTO> commentDTOList = commentService.listByQuestionId(Long.valueOf(id), CommentTypeEnum.QUESTION.getType());
         model.addAttribute("questionDTO", questionDTO);
         model.addAttribute("commentDTOList",commentDTOList);
+        model.addAttribute("questionDTOList",questionDTOList);
         return "question";
     }
 

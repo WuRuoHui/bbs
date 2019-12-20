@@ -31,6 +31,12 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDTO.description}">
                 </div>
                 <hr>
+                <div>
+                    <span th:each="tag:${questionDTO.tag.split(',')}">
+                        <span class="badge badge-pill badge-info"><i class="fas fa-tags" th:text="${tag}"></i></span>
+                    </span>
+                </div>
+                <hr>
                 <span>
                 <a style="color: #999;font-size: 13px" th:href="@{'/profile/publish/'+${questionDTO.id}}"
                    th:if="${session.user !=null && session.user.id == questionDTO.creator}"><span
@@ -50,20 +56,25 @@
                         <span th:text="${commentDTO.content}"></span>
                         <div class="commentMenu">
                             <span class="far fa-thumbs-up"></span>
-                            <span class="far fa-comment-alt" th:data-id="${commentDTO.id}" onclick="changeColor(this)" data-toggle="collapse" th:href="'#'+comment-+${commentDTO.id}"></span>
+                            <span class="far fa-comment-alt" th:data-id="${commentDTO.id}" onclick="changeColor(this)"
+                                  data-toggle="collapse" th:href="'#'+comment-+${commentDTO.id}"></span>
                             <span th:text="${commentDTO.commentCount}"></span>
                             <span class="float-right"
                                   th:text="${#dates.format(commentDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
                         </div>
-                        <div class="collapse" th:id="comment-+${commentDTO.id}" style="margin-bottom: 5px" id="collapseExample">
+                        <div class="collapse" th:id="comment-+${commentDTO.id}" style="margin-bottom: 5px"
+                             id="collapseExample">
                             <!--<div class="card card-body" style="margin-bottom: 5px;margin-top: 5px">
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
                                 squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
                                 sapiente
                                 ea proident.
                             </div>-->
-                            <input type="text" class="form-control" id="exampleInputEmail1" style="margin-bottom: 5px" placeholder="请输入评论内容..." th:id="input-+${commentDTO.id}">
-                            <button type="button" class="btn btn-success float-right" onclick="comment(this)" th:data-id="${commentDTO.id}">评论</button>
+                            <input type="text" class="form-control" id="exampleInputEmail1" style="margin-bottom: 5px"
+                                   placeholder="请输入评论内容..." th:id="input-+${commentDTO.id}">
+                            <button type="button" class="btn btn-success float-right" onclick="comment(this)"
+                                    th:data-id="${commentDTO.id}">评论
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -100,6 +111,11 @@
             <br>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>相关问题</h4>
+                <ul style="list-style: none;padding-left: 0px;">
+                    <li th:each="question : ${questionDTOList}">
+                        <a th:href="@{'/profile/questions/'+${question.id}}" th:text="${question.title}"></a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -24,4 +24,8 @@
       comment_count = comment_count + #{question.commentCount,jdbcType=INTEGER}
     where id = #{question.id,jdbcType=INTEGER}
     </update>
+    <select id="selectRelated" parameterType="com.wu.bbs.entity.Question" resultMap="BaseResultMap">
+        select * from question
+        where id != #{id,jdbcType=INTEGER} and tag REGEXP #{tag,jdbcType=VARCHAR}
+    </select>
 </mapper>

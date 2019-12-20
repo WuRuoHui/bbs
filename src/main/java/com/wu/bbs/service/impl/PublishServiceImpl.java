@@ -21,9 +21,12 @@ import com.wu.bbs.service.PublishService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PublishServiceImpl implements PublishService {
@@ -122,5 +125,30 @@ public class PublishServiceImpl implements PublishService {
         question.setId(id);
         questionExtMapper.incView(question);
         System.out.println(question);
+    }
+
+    @Override
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if (StringUtils.isEmpty(queryDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(queryDTO.getTag());
+        System.out.println(queryDTO.getTag());
+        if (queryDTO.getTag().contains(",")) {
+            String[] tags = queryDTO.getTag().split(",");
+            String regexTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+            question.setTag(regexTag);
+        }
+        List<Question> questionList = questionExtMapper.selectRelated(question);
+        System.out.println("tag："+question.getTag());
+        System.out.println("questionList："+questionList);
+        List<QuestionDTO> questionDTOList = questionList.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        return questionDTOList;
     }
 }

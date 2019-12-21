@@ -76,7 +76,7 @@ function changeColor(e) {
                         html: comment.content
                     })).append($("<span/>", {
                         "class": "float-right",
-                        html:moment(comment.gmtCreate).format('YYYY-MM-DD')
+                        html: moment(comment.gmtCreate).format('YYYY-MM-DD')
                     }))
                     var $mediaElement = $("<div/>", {
                         "class": "media",
@@ -97,3 +97,25 @@ function changeColor(e) {
         $(e).removeClass("changeColor");
     }
 }
+
+function selectTag(e) {
+    var value = e.getAttribute("data-tag");
+    var tag = $("#tag").val();
+
+    if (tag.indexOf(value) == -1) {
+        if (tag) {
+            $("#tag").val(tag + ',' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}
+
+function focusTag() {
+    $("#tagContainer").show();
+}
+
+/*
+function focusoutTag() {
+    $("#tagContainer").css("display","none");
+}*/

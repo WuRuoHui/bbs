@@ -6,6 +6,7 @@
  **/
 package com.wu.bbs.controller;
 
+import com.wu.bbs.cache.TagCache;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.Question;
 import com.wu.bbs.entity.User;
@@ -37,7 +38,9 @@ public class PublishController {
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        TagCache tagCache = new TagCache();
+        model.addAttribute("cacheTags", tagCache.get());
         return "publish";
     }
 

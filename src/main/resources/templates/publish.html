@@ -9,6 +9,7 @@
     <script type="application/javascript" src="/js/jquery-3.4.1.min.js"></script>
     <script type="application/javascript" src="/js/bootstrap.bundle.min.js"/>
     <script type="application/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="application/javascript" th:src="@{/js/bbs.js}"></script>
 </head>
 <body>
 <!-- 引入顶部工具栏 -->
@@ -30,7 +31,27 @@
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签</label>
-                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以，隔开">
+                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以，隔开" autocomplete="off" onfocus="focusTag()">
+                </div>
+                <div style="display: none" id="tagContainer">
+                    <div class="container mt-3" style="padding-left: 0px">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item" th:each="tags,tagsStat : ${cacheTags}">
+                                <a th:class="${tagsStat.index == 0?'nav-link active':'nav-link'}" data-toggle="tab" th:href="'#'+${tags.categoryName}" th:text="${tags.categoryName}">开发语言</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div th:id="${tags.categoryName}" th:class="${tagsStat.index == 0 ? 'container tab-pane active':'container tab-pane'}" th:each="tags,tagsStat : ${cacheTags}"><br>
+                                <span th:each="t : ${tags.tags}">
+                                    <span class="badge badge-pill badge-info"><i class="fas fa-tags" onclick="selectTag(this)" th:data-tag="${t}" th:text="${t}"></i></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <span class="alert alert-danger" th:text="${error}" th:if="${error!=null}"></span>
                 <button type="submit" class="btn btn-success btn-publish">发布</button>

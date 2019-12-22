@@ -28,6 +28,8 @@
         </ul>
         <ul class="navbar-nav navbar-right">
             <li th:if="${session.user != null}"><a class="nav-link" href="/publish">发布</a></li>
+            <li th:if="${session.user != null}"><a class="nav-link" th:href="@{/profile/replies}">回复<span
+                    class="badge badge-light" style="background: #d44343">9</span></a></li>
             <li class="nav-item" th:if="${session.user == null}">
                 <a class="nav-link"
                    href="https://github.com/login/oauth/authorize?client_id=0edababf293cfd3a6950&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录
@@ -37,7 +39,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                    data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false" th:text="${session.user.name}">
-                    <!--                    我-->
+                    <!-- 我 -->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">个人信息</a>

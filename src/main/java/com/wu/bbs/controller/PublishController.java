@@ -34,6 +34,8 @@ public class PublishController {
         model.addAttribute("tag", questionDTO.getTag());
         model.addAttribute("description", questionDTO.getDescription());
         model.addAttribute("id", questionDTO.getId());
+        TagCache tagCache = new TagCache();
+        model.addAttribute("cacheTags", tagCache.get());
         return "publish";
     }
 

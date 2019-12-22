@@ -44,7 +44,7 @@
         <!-- 指定数据库表 -->
 <!--        <table schema="" tableName="user" domainObjectName="User"></table>-->
 <!--        <table schema="" tableName="question" domainObjectName="Question"></table>-->
-        <table schema="" tableName="comment" domainObjectName="Comment"></table>
+        <table schema="" tableName="notification" domainObjectName="Notification"></table>
 
     </context>
 </generatorConfiguration>

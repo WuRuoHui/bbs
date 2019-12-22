@@ -8,8 +8,10 @@ package com.wu.bbs.service.impl;
 
 import com.wu.bbs.dto.CommentCreateDTO;
 import com.wu.bbs.dto.CommentDTO;
-import com.wu.bbs.dto.CommentTypeEnum;
+import com.wu.bbs.enums.CommentTypeEnum;
 import com.wu.bbs.entity.*;
+import com.wu.bbs.enums.NotificationEnum;
+import com.wu.bbs.enums.NotificationStatusEnum;
 import com.wu.bbs.exception.CustomizeErrorCode;
 import com.wu.bbs.exception.CustomizeException;
 import com.wu.bbs.mapper.*;
@@ -38,6 +40,8 @@ public class CommentServiceImpl implements CommentService {
     private QuestionExtMapper questionExtMapper;
     @Autowired
     private CommentExtMapper commentExtMapper;
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     @Override
     @Transactional
@@ -65,6 +69,8 @@ public class CommentServiceImpl implements CommentService {
             Comment c = commentMapper.selectByPrimaryKey(commentCreateDTO.getParentId());
             c.setCommentCount(1);
             commentExtMapper.incCommentCount(c);
+            //插入回复评论通知
+            createNotify(comment, Long.valueOf(selectByPrimaryKey.getCommentator()), NotificationEnum.REPLY_COMMENT);
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId().intValue());
@@ -74,7 +80,20 @@ public class CommentServiceImpl implements CommentService {
             commentMapper.insertSelective(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
+            createNotify(comment, Long.valueOf(question.getCreator()), NotificationEnum.REPLY_QUESTION);
         }
+    }
+
+    //插入回复评论通知
+    private void createNotify(Comment comment, Long receiver, NotificationEnum notificationEnum) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(notificationEnum.getType());
+        notification.setOuterId(comment.getParentId());
+        notification.setNotifier(Long.valueOf(comment.getCommentator()));
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notificationMapper.insertSelective(notification);
     }
 
     @Override
@@ -84,7 +103,7 @@ public class CommentServiceImpl implements CommentService {
                 .andParentIdEqualTo(id)
                 .andTypeEqualTo(type);
         List<Comment> commentList = commentMapper.selectByExample(commentExample);
-        if (commentList == null || commentList.size()==0) {
+        if (commentList == null || commentList.size() == 0) {
             return new ArrayList<>();
         }
         //获取去重的评论人
@@ -102,7 +121,7 @@ public class CommentServiceImpl implements CommentService {
         //转换comment为commentDTO
         List<CommentDTO> commentDTOList = commentList.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
-            BeanUtils.copyProperties(comment,commentDTO);
+            BeanUtils.copyProperties(comment, commentDTO);
             commentDTO.setUser(userMap.get(comment.getCommentator()));
             return commentDTO;
         }).collect(Collectors.toList());

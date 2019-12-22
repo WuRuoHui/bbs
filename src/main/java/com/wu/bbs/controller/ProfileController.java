@@ -8,10 +8,12 @@ package com.wu.bbs.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wu.bbs.dto.CommentDTO;
-import com.wu.bbs.dto.CommentTypeEnum;
+import com.wu.bbs.dto.NotificationDTO;
+import com.wu.bbs.enums.CommentTypeEnum;
 import com.wu.bbs.dto.QuestionDTO;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.service.CommentService;
+import com.wu.bbs.service.NotificationService;
 import com.wu.bbs.service.PublishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,8 @@ public class ProfileController {
     private PublishService publishService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private NotificationService notificationService;
 
     @RequestMapping("/profile/{action}")
     public String showProfile(@PathVariable(name = "action") String action, Model model, HttpServletRequest request, @RequestParam(defaultValue = "1") Integer currentPage,
@@ -39,13 +43,14 @@ public class ProfileController {
         if (action.equals("questions")) {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
+            PageInfo<QuestionDTO> paginationDTO = publishService.getAllQuestion(currentPage, size);
+            System.out.println(paginationDTO.toString());
+            model.addAttribute("paginationDTO", paginationDTO);
         } else if (action.equals("replies")) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+            PageInfo<NotificationDTO> notificationDTOPageInfo = notificationService.list(user.getId(),currentPage,size);
         }
-        PageInfo<QuestionDTO> paginationDTO = publishService.getAllQuestion(currentPage, size);
-        System.out.println(paginationDTO.toString());
-        model.addAttribute("paginationDTO", paginationDTO);
         return "profile";
     }
 

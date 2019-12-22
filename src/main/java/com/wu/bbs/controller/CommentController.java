@@ -8,7 +8,7 @@ package com.wu.bbs.controller;
 
 import com.wu.bbs.dto.CommentCreateDTO;
 import com.wu.bbs.dto.CommentDTO;
-import com.wu.bbs.dto.CommentTypeEnum;
+import com.wu.bbs.enums.CommentTypeEnum;
 import com.wu.bbs.dto.ResultDTO;
 import com.wu.bbs.entity.User;
 import com.wu.bbs.exception.CustomizeErrorCode;

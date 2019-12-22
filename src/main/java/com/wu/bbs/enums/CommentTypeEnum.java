@@ -1,4 +1,4 @@
-package com.wu.bbs.dto;
+package com.wu.bbs.enums;
 
 public enum CommentTypeEnum {
     QUESTION(1),

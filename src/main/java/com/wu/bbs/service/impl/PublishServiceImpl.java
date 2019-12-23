@@ -61,7 +61,7 @@ public class PublishServiceImpl implements PublishService {
         }
         PageHelper.startPage(currentPage, size);
         List<Question> questionList = questionMapper.selectByExampleWithBLOBs(new QuestionExample());
-        System.out.println(questionList);
+        System.out.println("questionList：" + questionList);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -142,8 +142,8 @@ public class PublishServiceImpl implements PublishService {
             question.setTag(regexTag);
         }
         List<Question> questionList = questionExtMapper.selectRelated(question);
-        System.out.println("tag："+question.getTag());
-        System.out.println("questionList："+questionList);
+        System.out.println("tag：" + question.getTag());
+        System.out.println("questionList：" + questionList);
         List<QuestionDTO> questionDTOList = questionList.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(q, questionDTO);

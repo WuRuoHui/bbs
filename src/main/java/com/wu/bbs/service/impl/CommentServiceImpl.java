@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
             c.setCommentCount(1);
             commentExtMapper.incCommentCount(c);
             //插入回复评论通知
-            createNotify(comment, Long.valueOf(selectByPrimaryKey.getCommentator()), NotificationEnum.REPLY_COMMENT);
+            createNotify(comment, Long.valueOf(selectByPrimaryKey.getCommentator()), NotificationEnum.REPLY_COMMENT,user.getName(),NotificationEnum.nameOfType(2));
         } else {
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId().intValue());
@@ -80,12 +80,12 @@ public class CommentServiceImpl implements CommentService {
             commentMapper.insertSelective(comment);
             question.setCommentCount(1);
             questionExtMapper.incCommentCount(question);
-            createNotify(comment, Long.valueOf(question.getCreator()), NotificationEnum.REPLY_QUESTION);
+            createNotify(comment, Long.valueOf(question.getCreator()), NotificationEnum.REPLY_QUESTION,user.getName(),NotificationEnum.nameOfType(1));
         }
     }
 
     //插入回复评论通知
-    private void createNotify(Comment comment, Long receiver, NotificationEnum notificationEnum) {
+    private void createNotify(Comment comment, Long receiver, NotificationEnum notificationEnum, String notifierName, String outerTitle) {
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationEnum.getType());
@@ -93,6 +93,9 @@ public class CommentServiceImpl implements CommentService {
         notification.setNotifier(Long.valueOf(comment.getCommentator()));
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
         notification.setReceiver(receiver);
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+        System.out.println(notification.toString());
         notificationMapper.insertSelective(notification);
     }
 

@@ -49,7 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
         if (notificationList == null || notificationList.size() <= 0) {
             return new PageInfo<>();
         }
-        System.out.println(notificationList);
+        System.out.println("notificationList：" + notificationList);
         List<NotificationDTO> notificationDTOList = new ArrayList<>();
         for (Notification notification : notificationList) {
             User user = userMapper.selectByPrimaryKey(notification.getNotifier().intValue());

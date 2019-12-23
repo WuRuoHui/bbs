@@ -44,12 +44,13 @@ public class ProfileController {
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
             PageInfo<QuestionDTO> paginationDTO = publishService.getAllQuestion(currentPage, size);
-            System.out.println(paginationDTO.toString());
+//            System.out.println(paginationDTO.toString());
             model.addAttribute("paginationDTO", paginationDTO);
         } else if (action.equals("replies")) {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
             PageInfo<NotificationDTO> notificationDTOPageInfo = notificationService.list(user.getId(),currentPage,size);
+            model.addAttribute("paginationDTO", notificationDTOPageInfo);
         }
         return "profile";
     }

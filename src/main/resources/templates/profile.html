@@ -20,7 +20,7 @@
         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" th:if="${sectionName}=='question'">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" th:if="${section}=='questions'">
                 <div class="media" th:each="question : ${paginationDTO.list}">
                     <img th:src="${question.user.avatarUrl}" class="mr-3 rounded littleImg"
                          alt="...">
@@ -60,7 +60,12 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" th:if="${sectionName}=='replies'"></div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" th:if="${section}=='replies'">
+                <div th:each="notification : ${paginationDTO.list}">
+                    <span th:text="${notification.notifierName}">1</span>
+                    <span th:text="${notification.outerTitle}"></span>
+                </div>
+            </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="list-group">
